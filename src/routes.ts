@@ -14,11 +14,19 @@ const complimentController = new ComplimentController();
 
 router.post('/users', userController.create);
 
+router.get('/users', userController.index);
+
 router.post('/tags', ensureAdmin, tagController.create);
+
+router.get('/tags', ensureAdmin, tagController.index);
 
 router.post('/session', sessionController.create);
 
 router.post('/compliments', complimentController.create);
+
+router.get('/compliments/received', complimentController.showReceiveCompliment);
+
+router.get('/compliments/sent', complimentController.ShowSenderCompliment);
 
 
 
