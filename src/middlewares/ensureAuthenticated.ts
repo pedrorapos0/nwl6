@@ -5,7 +5,7 @@ interface IPayload {
   sub: string;
 }
 
-export function ensureAuthenticated(
+export default function ensureAuthenticated(
   request: Request,
   response: Response,
   next: NextFunction
@@ -13,7 +13,7 @@ export function ensureAuthenticated(
   const authToken = request.headers.authorization;
 
   if (!authToken) {
-    return response.status(401).end();
+    return response.status(401).json({error: 'Token JWT não enviado!'});
   }
 
   const [, token] = authToken.split(" ");
@@ -22,14 +22,14 @@ export function ensureAuthenticated(
  
     const { sub } = verify(
       token,
-      "4f93ac9d10cb751b8c9c646bc9dbccb9"
+     process.env.SECRET_KEY
     ) as IPayload;
 
     request.user_id = sub;
 
     return next();
   } catch (err) {
-    return response.status(401).end();
+    return response.status(401).json({error: 'Token JWT inválido!'});
   }
 
 }

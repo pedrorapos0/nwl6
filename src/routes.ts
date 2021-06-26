@@ -4,6 +4,7 @@ import TagController from './controllers/TagController';
 import SessionController from './controllers/SessionController';
 import ComplimentController from './controllers/ComplimentController';
 import ensureAdmin from './middlewares/ensureAdmin';
+import ensureAuthenticated from './middlewares/ensureAuthenticated';
 
 
 export const router = Router();
@@ -14,19 +15,19 @@ const complimentController = new ComplimentController();
 
 router.post('/users', userController.create);
 
-router.get('/users', userController.index);
+router.get('/users', ensureAuthenticated, userController.index);
 
-router.post('/tags', ensureAdmin, tagController.create);
+router.post('/tags',ensureAuthenticated, ensureAdmin, tagController.create);
 
-router.get('/tags', ensureAdmin, tagController.index);
+router.get('/tags', ensureAuthenticated, ensureAdmin, tagController.index);
 
 router.post('/session', sessionController.create);
 
-router.post('/compliments', complimentController.create);
+router.post('/compliments', ensureAuthenticated, complimentController.create);
 
-router.get('/compliments/received', complimentController.showReceiveCompliment);
+router.get('/compliments/received',ensureAuthenticated,complimentController.showReceiveCompliment);
 
-router.get('/compliments/sent', complimentController.ShowSenderCompliment);
+router.get('/compliments/sent',ensureAuthenticated, complimentController.ShowSenderCompliment);
 
 
 
