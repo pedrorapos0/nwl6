@@ -10,7 +10,7 @@ class SessionController {
 
         const token = await authenticateUserServicession.execute({email, password});
 
-        return response.send(token);
+        return response.json(token);
     }
 }
 
